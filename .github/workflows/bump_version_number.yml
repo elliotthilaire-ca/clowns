@@ -24,7 +24,7 @@ jobs:
 
     - name: "Configure Git"
       run: |
-        git config --global user.email "no-reply@example.com" \
+        git config --global user.email "elliotthilaire-ca@users.noreply.github.com" \
         git config --global user.name "eliotthilaire-ca"
         git checkout -b master
 
