@@ -26,7 +26,7 @@ jobs:
       run: |
         git config --global user.email "elliotthilaire-ca@users.noreply.github.com"
         git config --global user.name "eliotthilaire-ca"
-        git checkout -b master
+        git checkout master
 
     - name: "Bump the version"
       run: |
