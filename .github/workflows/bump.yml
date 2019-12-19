@@ -1,0 +1,41 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  bump:
+    name: Bump
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        version: 2.6.x
+
+    - name: Install Gems
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+
+    - name: "Configure Git"
+      run: |
+        git config --global user.email ${GITHUB_ACTOR}@users.noreply.github.com
+        git config --global user.name ${GITHUB_ACTOR}
+
+    - name: "Bump Version"
+      run: |
+        bundle exec gem bump
+        bundle exec gem tags
+
+    - name: "Push to GitHub"
+      run: |
+        git remote set-url --push origin https://${OWNER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+        git push --set-upstream release
+        git push --force --tags --set-upstream origin release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
