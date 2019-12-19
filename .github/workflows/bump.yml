@@ -35,6 +35,6 @@ jobs:
     - name: "Push to GitHub"
       run: |
         git remote set-url --push origin https://${OWNER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
-        git push --set-upstream origin release
+        git push --set-upstream origin HEAD:release
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
