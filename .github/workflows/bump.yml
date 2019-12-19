@@ -1,4 +1,4 @@
-name: Release
+name: Bump
 
 on:
   push:
@@ -30,7 +30,7 @@ jobs:
     - name: "Bump Version"
       run: |
         bundle exec gem bump
-        bundle exec gem tags
+        bundle exec gem tag
 
     - name: "Push to GitHub"
       run: |
