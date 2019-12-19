@@ -6,8 +6,8 @@ on:
       - master
 
 jobs:
-  bump:
-    name: Bump
+  release:
+    name: Release
     runs-on: ubuntu-latest
 
     steps:
