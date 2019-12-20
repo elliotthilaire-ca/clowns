@@ -22,10 +22,14 @@ jobs:
         gem install bundler
         bundle install --jobs 4 --retry 3
 
-    - name: "Bump Version"
-      run: |
-        bundle exec gem bump
-        bundle exec gem tag
+#     - name: "Bump Version"
+#       run: |       
+#         bundle exec gem bump
+#         bundle exec gem tag
+
+    - name: "touch a file"
+      run: touch this.file
+
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v1
