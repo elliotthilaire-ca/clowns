@@ -32,4 +32,6 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: release
         branch-suffix: none
+        labels: release
+
 
