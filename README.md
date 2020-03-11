@@ -1,4 +1,4 @@
-# Clowns
+# Le bouffons
 
 Welcome to your new gem! Clowns! HAHHAAAA! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/clowns`. HAHHAAAA. To experiment with that code, run `bin/console` for an interactive prompt. HAAHAA..
 
