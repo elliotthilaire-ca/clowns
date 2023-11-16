@@ -9,6 +9,6 @@ on:
 
 jobs:
   release: 
-    uses: elliotthilaire-ca/clowns/.github/workflows/shared-prerelease.yml@master
+    uses: elliotthilaire-ca/clowns/.github/workflows/prerelease-workflow.yml@master
     with:
       branch: ${{ inputs.branch }}
