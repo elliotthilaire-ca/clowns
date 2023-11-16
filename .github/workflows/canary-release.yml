@@ -34,12 +34,12 @@ jobs:
           raise "More than one gemspec file is present #{gemspec_files}. Temporarily rename the others and re-run this action again to deploy a canary release." unless gemspec_files.one?
           version = Gem::Specification::load(gemspec_files.first).version.to_s
   
-          # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-          semver_regex = /^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
-          match = version.match(semver_regex)
-      
-          raise "Version #{version} does not match Semantic Versioning 2.0.0 format (https://semver.org/spec/v2.0.0.html#spec-item-9)." unless match
-          raise "Did you forget to bump the version before trying to publish a canary release? Ensure #{version} has been bumped and includes a prerelease segment (https://semver.org/spec/v2.0.0.html#spec-item-9) before trying to publish a canary release." unless match[:prerelease]
+          if version.match?(/^.*\p{L}.*$/) # https://regex101.com/r/r7USwl
+            puts "#{version} is a valid prerelease version number"
+          else 
+            puts "#{version} is not a prerelease version number. Ensure #{version} has been bumped and includes a [prerelease segment](https://guides.rubygems.org/patterns/#prerelease-gems)."
+            exit 1
+          end
         '
 
     - name: Publish to GitHub Package Repository
