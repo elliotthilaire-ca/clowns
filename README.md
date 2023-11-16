@@ -31,7 +31,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ### Publishing a prerelease version of the gem
 
 1. In your development branch, bump the gem version number and include a prerelease string.
-2. Manually trigger the [prerelease](../../actions/workflows/manual-prerelease.yml), specifying the name of your development branch. 
+2. Manually trigger the [prerelease workflow](../../actions/workflows/manual-prerelease.yml), specifying the name of your development branch. 
 
 ## Contributing
 
