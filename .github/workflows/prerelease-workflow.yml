@@ -1,4 +1,4 @@
-name: Prerelease workflow
+name: Prerelease worfklow
 
 on:
   workflow_call:
@@ -49,7 +49,7 @@ jobs:
         chmod 0600 $HOME/.gem/credentials
         printf -- "---\n:github: Bearer ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
         gem build *.gemspec
-        gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} *.gem
+        gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} *.gem >> $GITHUB_STEP_SUMMARY
       env:
         GEM_HOST_API_KEY: ${{secrets.GITHUB_TOKEN}}
         OWNER: elliotthilaire-ca
