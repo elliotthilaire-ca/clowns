@@ -1,0 +1,55 @@
+name: Canary Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'The branch to publish from'
+        required: true
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@master
+      with:
+        ref: ${{ inputs.branch }} 
+           
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        version: 2.6.x
+
+    - name: Install Gems
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+
+    - name: Ensure gem has prerelease version number
+      run: |
+        ruby -e '
+          gemspec_files = Dir["*.gemspec"]
+          raise "More than one gemspec file is present #{gemspec_files}. Temporarily rename the others and re-run this action again to deploy a canary release." unless gemspec_files.one?
+          version = Gem::Specification::load(gemspec_files.first).version.to_s
+  
+          # https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+          semver_regex = /^(?<major>0|[1-9]\d*)\.(?<minor>0|[1-9]\d*)\.(?<patch>0|[1-9]\d*)(?:-(?<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+          match = version.match(semver_regex)
+      
+          raise "Version #{version} does not match Semantic Versioning 2.0.0 format (https://semver.org/spec/v2.0.0.html#spec-item-9)." unless match
+          raise "Did you forget to bump the version before trying to publish a canary release? Ensure #{version} has been bumped and includes a prerelease segment (https://semver.org/spec/v2.0.0.html#spec-item-9) before trying to publish a canary release." unless match[:prerelease]
+        '
+
+    - name: Publish to GitHub Package Repository
+      run: |
+        mkdir -p $HOME/.gem
+        touch $HOME/.gem/credentials
+        chmod 0600 $HOME/.gem/credentials
+        printf -- "---\n:github: Bearer ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+        gem build *.gemspec
+        gem push --KEY github --host https://rubygems.pkg.github.com/${OWNER} *.gem
+      env:
+        GEM_HOST_API_KEY: ${{secrets.GITHUB_TOKEN}}
+        OWNER: elliotthilaire-ca
