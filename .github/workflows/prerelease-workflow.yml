@@ -1,4 +1,4 @@
-name: Publish Prerelease
+name: Prerelease workflow
 
 on:
   workflow_call:

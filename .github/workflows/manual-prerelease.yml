@@ -1,4 +1,4 @@
-name: Prerelease
+name: Manual Prerelease
 
 on:
   workflow_dispatch:
