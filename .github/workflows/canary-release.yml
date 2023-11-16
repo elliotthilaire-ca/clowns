@@ -40,7 +40,7 @@ jobs:
             puts "#{version} is not a prerelease version number. Ensure #{version} has been bumped and includes a [prerelease segment](https://guides.rubygems.org/patterns/#prerelease-gems)."
             exit 1
           end
-        '
+        ' >> $GITHUB_STEP_SUMMARY
 
     - name: Publish to GitHub Package Repository
       run: |
