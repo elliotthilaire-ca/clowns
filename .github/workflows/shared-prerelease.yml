@@ -1,11 +1,12 @@
 name: Publish Prerelease
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       branch:
         description: 'The branch to publish from'
         required: true
+        type: string
 
 jobs:
   release:

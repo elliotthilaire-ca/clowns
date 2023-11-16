@@ -1,0 +1,14 @@
+name: Prerelease
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'The branch to publish from'
+        required: true
+
+jobs:
+  release: 
+    uses: elliotthilaire-ca/clowns/.github/workflows/shared-prerelease.yml@master
+    with:
+      branch: ${{ inputs.branch }}
